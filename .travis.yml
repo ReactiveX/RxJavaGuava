@@ -2,19 +2,14 @@ language: java
 jdk:
 - oraclejdk7
 sudo: false
-# as per http://blog.travis-ci.com/2014-12-17-faster-builds-with-container-based-infrastructure/
-
-# script for build and release via Travis to Bintray
 script: gradle/buildViaTravis.sh
-
-# cache between builds
 cache:
   directories:
-  - $HOME/.m2
-  - $HOME/.gradle
+  - "$HOME/.m2"
+  - "$HOME/.gradle"
 env:
   global:
-  - secure: "Zc1cB4aKIj8w1FNZ2Ltdm8mueQmAXXnifjRvMWA1d8tgA7mNCS6CCJ9i26BlQU/2/EslsKJfwb77TJfkKM66dLzp75ix0yVs3HmmEOtFolazPvfYynW+lLtBYZAiXVFvsO9pwrlF1c2hFhYVOt+35662LQLJY4B62pNuYCNXKRQ="
-  - secure: "TR8yKd3nTur6vl2YAUq63tU5QAiZKBhncGVia7EYbX+HJh5CDiQgPJLCj7f6Eff/gnBQkCjsygFEE8XFANH8wUzHSH3gxbe2hfAezV0RyXe0Yk5XtdNtbng4FaIaZt8quWiQaOFQXW61PIUt5B1X6IlP059Yrhf/EbkZ/8ogwrE="
-  - secure: "Rrhg07v816cMFsF6pHuvCZ7FerE0OCvOcpNUivRmfLwSfhqboAY9dmSTalhFRo9r0BYuTvYL66tPWUY1XdGyc7OBQ3R9EwM+kAB2QR68Tr2U1VrOkyZ6+nLR6V5YA5ba9GcuyRz3Y1BMIMX0SBdsify+4ArWzH6l+zY2t+f2cf4="
-  - secure: "K6q3TrbZBTEcVzuKmuoK3cYJ9fF6npYiAf/TnzY3hMRo+n24QjkVaT3cIrTQhqcPQVecCo9j21YqB8KkuTgiJNAd4P7IFXsRB1gwbvf8zJSenHk+cL0YuM3HpK7l2NXSad2S8+qFX/ObNrSnF2ysgSJMr5lMmsiPrypJgGbbnHk="
+  - secure: INk2gUkERRJHUr5l2TxDwhqbcN9Axax4OgfOT7aellmeG7JGQdeI9LXp1kZPVU48u+2IdeXcBpN8ZZCKPOD6D3VxJWRTvLPcHTrZ2dsj8kdwqbfvtxL37QkPKmReB1n/wyGaE90KK6VWGZ1UeOBtdHg4AN/8K9yJWFBPa6kSSqI=
+  - secure: dm6a3tpH0NzMGUELjLGUuXRBU52I/XWX6rkytkkgNJJFf5kzvFN5YB+10jlJVlzu9uLWOAZ75qGJmW77zCdNWROoyyvdvXzrazh70Cry69SGo3RicT6up/NA3AHqclXGKF42Pn3nYSgvsKMSxxaP/NNF1gm5e9Tl35WYtOqZXIk=
+  - secure: JLDVCFwPrRL70OY0M0g2b+YVu3Ry7z2ZL5lA0+yRFsK5gSRaCPLzOTq5a4w6yrkc4VbTJnOA4IIpfgnyRuhh8o4v1rl2jEPydXeEN+Yrb+zJqCQAuOBzXSwJmjZECUV1VLqXJWYK5QsKv2XqRA3H9VTyi1kVoofdGh7fydk5gP8=
+  - secure: BWZfl2zX+2lDDN388e8UNCxmuD12Ha8KH+/UW9B7DIgmM5q9ODSdYgIjugPXY2aKMxDpTvSTkx7zUDQtl9afXn6tN8vFcOvaduoj2SDdX5svTrpprTFdbE1TFnrrbDqkPvFsT/LBMJrQFDU0Cu/9CW6uSkMbZiDIe+7/Xbr8fMM=
