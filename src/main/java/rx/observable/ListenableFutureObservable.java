@@ -21,6 +21,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import rx.Observable;
 import rx.Observable.OnSubscribe;
 import rx.functions.Action0;
+import rx.internal.operators.SingleDelayedProducer;
 import rx.Observer;
 import rx.Scheduler;
 import rx.Scheduler.Worker;
@@ -45,7 +46,11 @@ public class ListenableFutureObservable {
                 worker.schedule(new Action0() {
                     @Override
                     public void call() {
-                        command.run();
+                        try {
+                            command.run();
+                        } finally {
+                            worker.unsubscribe();
+                        }
                     }
                 });
             }
@@ -63,18 +68,21 @@ public class ListenableFutureObservable {
         return Observable.create(new OnSubscribe<T>() {
             @Override
             public void call(final Subscriber<? super T> subscriber) {
+                final SingleDelayedProducer<T> sdp = new SingleDelayedProducer<T>(subscriber);
+                subscriber.setProducer(sdp);
+                
                 future.addListener(new Runnable() {
                     @Override
                     public void run() {
                         try {
                             T t = future.get();
-                            subscriber.onNext(t);
-                            subscriber.onCompleted();
+                            sdp.set(t);
                         } catch (Exception e) {
                             subscriber.onError(e);
                         }
                     }
                 }, executor);
+                
             }
         });
     }
