@@ -21,7 +21,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import rx.Observable;
 import rx.Observable.OnSubscribe;
 import rx.functions.Action0;
-import rx.internal.operators.SingleDelayedProducer;
+import rx.internal.producers.SingleDelayedProducer;
 import rx.Observer;
 import rx.Scheduler;
 import rx.Scheduler.Worker;
@@ -76,7 +76,7 @@ public class ListenableFutureObservable {
                     public void run() {
                         try {
                             T t = future.get();
-                            sdp.set(t);
+                            sdp.setValue(t);
                         } catch (Exception e) {
                             subscriber.onError(e);
                         }
