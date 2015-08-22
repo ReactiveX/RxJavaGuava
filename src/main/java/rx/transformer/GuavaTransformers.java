@@ -94,31 +94,23 @@ public final class GuavaTransformers {
         return new Observable.Transformer<T,ImmutableMap<K,V>>() {
             @Override
             public Observable<ImmutableMap<K, V>> call(Observable<T> observable) {
-                return observable.map(new Func1<T, MapTuple<T, K, V>>() {
+                return observable.collect(new Func0<ImmutableMap.Builder<K, V>>() {
                     @Override
-                    public MapTuple<T, K, V> call(T t) {
-                        return new MapTuple<T,K,V>(t, valueMapper.call(t), keyMapper.call(t));
+                    public ImmutableMap.Builder<K, V> call() {
+                        return ImmutableMap.builder();
+                    }
+                }, new Action2<ImmutableMap.Builder<K, V>, T>() {
+                    @Override
+                    public void call(ImmutableMap.Builder<K, V> builder, T t) {
+                        builder.put(keyMapper.call(t), valueMapper.call(t));
                     }
                 })
-                .collect(
-                        new Func0<ImmutableMap.Builder<K, V>>() {
-                            @Override
-                            public ImmutableMap.Builder<K, V> call() {
-                                return ImmutableMap.builder();
-                            }
-                        },
-                        new Action2<ImmutableMap.Builder<K, V>, MapTuple<T, K, V>>() {
-                            @Override
-                            public void call(ImmutableMap.Builder<K, V> builder, MapTuple<T, K, V> mapTuple) {
-                                builder.put(mapTuple.k, mapTuple.v);
-                            }
-                        }
-                ).map(new Func1<ImmutableMap.Builder<K, V>, ImmutableMap<K, V>>() {
-                            @Override
-                            public ImmutableMap<K, V> call(ImmutableMap.Builder<K, V> builder) {
-                                return builder.build();
-                            }
-                        });
+                .map(new Func1<ImmutableMap.Builder<K, V>, ImmutableMap<K, V>>() {
+                    @Override
+                    public ImmutableMap<K, V> call(ImmutableMap.Builder<K, V> builder) {
+                        return builder.build();
+                    }
+                });
             }
         };
     }
@@ -131,26 +123,18 @@ public final class GuavaTransformers {
         return new Observable.Transformer<T,ImmutableListMultimap<K,V>>() {
             @Override
             public Observable<ImmutableListMultimap<K, V>> call(Observable<T> observable) {
-                return observable.map(new Func1<T, MapTuple<T, K, V>>() {
+                return observable.collect(new Func0<ImmutableListMultimap.Builder<K, V>>() {
                     @Override
-                    public MapTuple<T, K, V> call(T t) {
-                        return new MapTuple<T,K,V>(t, valueMapper.call(t), keyMapper.call(t));
+                    public ImmutableListMultimap.Builder<K, V> call() {
+                        return ImmutableListMultimap.builder();
+                    }
+                }, new Action2<ImmutableListMultimap.Builder<K, V>, T>() {
+                    @Override
+                    public void call(ImmutableListMultimap.Builder<K, V> builder, T t) {
+                        builder.put(keyMapper.call(t), valueMapper.call(t));
                     }
                 })
-                        .collect(
-                                new Func0<ImmutableListMultimap.Builder<K, V>>() {
-                                    @Override
-                                    public ImmutableListMultimap.Builder<K, V> call() {
-                                        return ImmutableListMultimap.builder();
-                                    }
-                                },
-                                new Action2<ImmutableListMultimap.Builder<K, V>, MapTuple<T, K, V>>() {
-                                    @Override
-                                    public void call(ImmutableListMultimap.Builder<K, V> builder, MapTuple<T, K, V> mapTuple) {
-                                        builder.put(mapTuple.k, mapTuple.v);
-                                    }
-                                }
-                        ).map(new Func1<ImmutableListMultimap.Builder<K, V>, ImmutableListMultimap<K, V>>() {
+                .map(new Func1<ImmutableListMultimap.Builder<K, V>, ImmutableListMultimap<K, V>>() {
                     @Override
                     public ImmutableListMultimap<K, V> call(ImmutableListMultimap.Builder<K, V> builder) {
                         return builder.build();
@@ -158,16 +142,5 @@ public final class GuavaTransformers {
                 });
             }
         };
-    }
-
-    private static final class MapTuple<T,K,V> {
-        private final T t;
-        private final V v;
-        private final K k;
-        private MapTuple(T t, V v, K k) {
-            this.t = t;
-            this.v = v;
-            this.k = k;
-        }
     }
 }
