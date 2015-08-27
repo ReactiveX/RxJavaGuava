@@ -4,7 +4,7 @@ A simple utility class for interop between RxJava and Guava's `ListenableFuture`
 
     Observable<ImmutableList<T>>
     
-    Observable<Immutable<Set<T>>
+    Observable<ImmutableSet<T>>
     
     Observable<ImmutableMap<K,T>>
     
